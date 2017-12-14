@@ -233,7 +233,7 @@ open class PasscodeLockViewController: UIViewController, PasscodeLockTypeDelegat
         }
     }
     
-    fileprivate func animatePlacehodlerAtIndex(_ index: Int, toState state: PasscodeSignPlaceholderView.State) {
+    fileprivate func animatePlaceholderAtIndex(_ index: Int, toState state: PasscodeSignPlaceholderView.State) {
         
         guard index < placeholders.count && index >= 0 else { return }
         
@@ -265,13 +265,13 @@ open class PasscodeLockViewController: UIViewController, PasscodeLockTypeDelegat
     
     open func passcodeLock(_ lock: PasscodeLockType, addedSignAtIndex index: Int) {
         
-        animatePlacehodlerAtIndex(index, toState: .active)
+        animatePlaceholderAtIndex(index, toState: .active)
         deleteSignButton?.isEnabled = true
     }
     
     open func passcodeLock(_ lock: PasscodeLockType, removedSignAtIndex index: Int) {
         
-        animatePlacehodlerAtIndex(index, toState: .inactive)
+        animatePlaceholderAtIndex(index, toState: .inactive)
         
         if index == 0 {
             
