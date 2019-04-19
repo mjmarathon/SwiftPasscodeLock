@@ -36,6 +36,7 @@ open class PasscodeLockViewController: UIViewController, PasscodeLockTypeDelegat
     @IBOutlet open weak var placeholdersX: NSLayoutConstraint?
     
     open var successCallback: ((_ lock: PasscodeLockType) -> Void)?
+    open var cancelCallback: (() -> Void)?
     open var dismissCompletionCallback: (()->Void)?
     open var animateOnDismiss: Bool
     open var notificationCenter: NotificationCenter?
@@ -146,8 +147,10 @@ open class PasscodeLockViewController: UIViewController, PasscodeLockTypeDelegat
     }
     
     @IBAction func cancelButtonTap(_ sender: UIButton) {
-        
-        dismissPasscodeLock(passcodeLock)
+        dismissPasscodeLock(passcodeLock, completionHandler: { [weak self] in
+            guard let weakSelf = self else {return}
+            weakSelf.cancelCallback?()
+        })
     }
     
     @IBAction func deleteSignButtonTap(_ sender: UIButton) {
