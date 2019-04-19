@@ -15,7 +15,7 @@ public protocol PasscodeLockConfigurationType {
     var isBiometricAuthAllowed: Bool {get set}
     var shouldRequestBiometricAuthImmediately: Bool {get}
     var biometricAuthReason: String? {get set}
-    var maximumInccorectPasscodeAttempts: Int {get}
+    var maximumIncorrectPasscodeAttempts: Int {get}
     var allowsCancellation:Bool {get}
 }
 

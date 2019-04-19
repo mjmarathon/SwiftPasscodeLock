@@ -37,6 +37,7 @@ open class PasscodeLockViewController: UIViewController, PasscodeLockTypeDelegat
     
     open var successCallback: ((_ lock: PasscodeLockType) -> Void)?
     open var cancelCallback: (() -> Void)?
+    open var failedCallback: ((_ lock: PasscodeLockType) -> Void)?
     open var dismissCompletionCallback: (()->Void)?
     open var animateOnDismiss: Bool
     open var notificationCenter: NotificationCenter?
@@ -44,6 +45,7 @@ open class PasscodeLockViewController: UIViewController, PasscodeLockTypeDelegat
     internal let passcodeConfiguration: PasscodeLockConfigurationType
     internal var passcodeLock: PasscodeLockType
     internal var isPlaceholdersAnimationCompleted = true
+    internal var numberOfFailedPasscodes = 0
     
     fileprivate var shouldTryToAuthenticateWithBiometrics = true
     
@@ -250,13 +252,21 @@ open class PasscodeLockViewController: UIViewController, PasscodeLockTypeDelegat
         deleteSignButton?.isEnabled = true
         animatePlaceholders(placeholders, toState: .inactive)
         dismissPasscodeLock(lock, completionHandler: { [weak self] in
-            self?.successCallback?(lock)
+            guard let weakSelf = self else {return}
+            weakSelf.successCallback?(lock)
         })
     }
     
     open func passcodeLockDidFail(_ lock: PasscodeLockType) {
-        
         animateWrongPassword()
+        numberOfFailedPasscodes += 1
+        if (numberOfFailedPasscodes >= passcodeConfiguration.maximumIncorrectPasscodeAttempts) {
+            dismissPasscodeLock(lock, completionHandler: { [weak self] in
+                guard let weakSelf = self else {return}
+                weakSelf.failedCallback?(lock)
+                weakSelf.numberOfFailedPasscodes = 0
+            })
+        }
     }
     
     open func passcodeLockDidChangeState(_ lock: PasscodeLockType) {

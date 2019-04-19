@@ -10,13 +10,13 @@ import Foundation
 import PasscodeLock
 
 struct PasscodeLockConfiguration: PasscodeLockConfigurationType {
-    
     let repository: PasscodeRepositoryType
     var isBiometricAuthAllowed: Bool = true
     let shouldRequestBiometricAuthImmediately: Bool = true
     var biometricAuthReason: String? = nil
     var allowsCancellation:Bool = false
-
+    var maximumIncorrectPasscodeAttempts: Int = 3
+    
     init(repository: PasscodeRepositoryType) {
         
         self.repository = repository
