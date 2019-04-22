@@ -45,7 +45,7 @@ open class PasscodeLockViewController: UIViewController, PasscodeLockTypeDelegat
     internal let passcodeConfiguration: PasscodeLockConfigurationType
     internal var passcodeLock: PasscodeLockType
     internal var isPlaceholdersAnimationCompleted = true
-    internal var numberOfFailedPasscodes = 0
+    open var numberOfFailedPasscodes = 0
     
     fileprivate var shouldTryToAuthenticateWithBiometrics = true
     
