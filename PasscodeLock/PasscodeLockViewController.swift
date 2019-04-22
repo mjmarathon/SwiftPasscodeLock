@@ -37,7 +37,7 @@ open class PasscodeLockViewController: UIViewController, PasscodeLockTypeDelegat
     
     open var successCallback: ((_ lock: PasscodeLockType) -> Void)?
     open var cancelCallback: (() -> Void)?
-    open var incorrectAttemptCallback: ((_ lock: PasscodeLockType) -> Void)?
+    open var incorrectAttemptCallback: ((_ lock: PasscodeLockType, _ attempt: Int) -> Void)?
     open var failedCallback: ((_ lock: PasscodeLockType) -> Void)?
     open var dismissCompletionCallback: (()->Void)?
     open var animateOnDismiss: Bool
@@ -261,7 +261,7 @@ open class PasscodeLockViewController: UIViewController, PasscodeLockTypeDelegat
     open func passcodeLockDidFail(_ lock: PasscodeLockType) {
         animateWrongPassword()
         numberOfFailedPasscodes += 1
-        self.incorrectAttemptCallback?(lock)
+        self.incorrectAttemptCallback?(lock, numberOfFailedPasscodes)
         if (numberOfFailedPasscodes >= passcodeConfiguration.maximumIncorrectPasscodeAttempts) {
             dismissPasscodeLock(lock, completionHandler: { [weak self] in
                 guard let weakSelf = self else {return}
